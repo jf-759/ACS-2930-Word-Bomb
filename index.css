@@ -1,0 +1,78 @@
+/* Global start*/
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+  }
+  :root{
+    /* Colors */
+    --background-color: rgb(8, 23, 45);
+    --btn-color: rgb(16, 37, 69);
+    --nav-border-color: rgb(5, 16, 60);
+    --text-color: rgba(230, 223, 223, 0.681);
+    --text-color-offset: rgba(230, 223, 223, 0.499);
+    --glow: rgb(98, 212, 246);
+    --glow2: rgb(62, 139, 244);
+    --glow3: rgb(33, 77, 131);
+    
+    /* Fonts and Font Sizes */
+    --heading-font: "Fredoka One";
+    --main-font: "Fredoka One";
+    --body-font: "Helvetica";
+    --font-size-large: 5rem;
+    --font-size-medium: 2rem;
+    --font-size-normal: 1rem;
+    --font-size-small: 0.8rem;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body{
+    font-family: var(--body-font);
+    line-height: 1.5;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  h1, h2, h3{
+    font-family: var(--main-font);
+  }
+  section{
+    margin: 0 auto;
+    padding: 120px o;
+    max-width: 1000px;
+    display: block;
+  }
+  
+
+  h1{
+    font-size: var(--font-size-large);
+    color: var(--glow);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  h2{
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  h4{
+    font-size: var(--font-size-normal);
+    color: var(--glow3);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .container {
+    display: flex;
+    align-items: center; 
+  }
+  
+  .text-input {
+    width: 25%;
+    padding: 10px;
+    margin: 10px 0;
+    margin-left: 38%;
+    border: none;
+    border-bottom: 2px solid var(--glow);
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
