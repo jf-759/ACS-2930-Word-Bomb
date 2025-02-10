@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block title %} ACS 2930 Word Bomb {% endblock %} {%
+block content %}
+<h2>[GIF of bomb]</h2>
+<h4>[fill in the blank]</h4>
+<p>Score: <span id="score">{{ score }}</span></p>
+<!-- Display score here -->
+
+<!-- Form to submit the answer -->
+<section class="weather-form">
+  <form action="/" method="POST">
+    <p>
+      <label>
+        <input type="text" name="fill_in_the_blank" />
+      </label>
+    </p>
+    <p>
+      <input type="submit" value="Submit" />
+    </p>
+  </form>
+</section>
+
+<button onclick="updateScore()">Increase Score</button>
+
+<script>
+  function updateScore() {
+    // Send a POST request to Flask to update the score
+    fetch("/update-score", {
+      method: "POST", // HTTP method
+    })
+      .then((response) => response.json()) // Parse the JSON response from Flask
+      .then((data) => {
+        // Update the score element with the new score
+        document.getElementById("score").innerText = data.score;
+      })
+      .catch((error) => console.error("Error:", error)); // Handle errors
+  }
+</script>
+
+{% endblock %}
