@@ -73,4 +73,5 @@ document.addEventListener("DOMContentLoaded", function () {
     startNewRound();
 
     wordForm.addEventListener("submit", checkWord);
+
 }); 
