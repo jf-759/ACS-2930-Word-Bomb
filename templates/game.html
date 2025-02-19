@@ -15,10 +15,10 @@ block content %}
 
 <!-- Form to submit the answer -->
 <section class="word-form">
-  <form action="/" method="POST">
+  <form id="word-form">
     <p>
       <label>
-        <input type="text" name="fill_in_the_blank" />
+        <input type="text" id="word-input" name="fill_in_the_blank" />
       </label>
     </p>
     <p>
@@ -28,20 +28,5 @@ block content %}
 </section>
 
 <button onclick="updateScore()">Increase Score</button>
-
-<script>
-  function updateScore() {
-    // Send a POST request to Flask to update the score
-    fetch("/update-score", {
-      method: "POST", // HTTP method
-    })
-      .then((response) => response.json()) // Parse the JSON response from Flask
-      .then((data) => {
-        // Update the score element with the new score
-        document.getElementById("score").innerText = data.score;
-      })
-      .catch((error) => console.error("Error:", error)); // Handle errors
-  }
-</script>
 
 {% endblock %}
