@@ -2,11 +2,19 @@
 block content %}
 <h2>[GIF of bomb]</h2>
 <h4>[fill in the blank]</h4>
-<p>Score: <span id="score">{{ score }}</span></p>
+
+<!-- Display Random Letter and Timer-->
+ <h4 id="random-letter">Letter: </h4>
+ <h3 id="timer">Time Left: 10s </h3>
+
 <!-- Display score here -->
+<p>Score: <span id="score">{{ score }}</span></p>
+
+<!--Message area for word validation feedback -->
+<p id="message"></p>
 
 <!-- Form to submit the answer -->
-<section class="weather-form">
+<section class="word-form">
   <form action="/" method="POST">
     <p>
       <label>
