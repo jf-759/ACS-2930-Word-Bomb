@@ -9,16 +9,31 @@ document.addEventListener("DOMContentLoaded", function () {
     let timeLeft = 10;
     let timer;
     let currentLetter = "";
+    let score = 0;
+    
+    console.log("Initial Score: ", score);
 
-    document.addEventListener("keydown", function(e) {
+    inputField.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
-            checkWord();
+            e.preventDefault();
+            wordForm.dispatchEvent(new Event("submit"));
         }
     });
     
+    function updateScore() {
+        fetch("/update-score", {
+            method: "POST",
+        })
+        .then((response) => response.json())
+        .then((data) => {
+                scoreDisplay.innerText = data.score;
+            })
+        .catch((error) => console.error("Error: ", error));
+    }
+
 
     function getRandomLetter() {
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
         return alphabet[Math.floor(Math.random() * alphabet.length)];
 
     }
@@ -66,17 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
         inputField.value = "";
     }
 
-    function updateScore() {
-        fetch("/update-score", {
-            method: "POST",
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            scoreDisplay.innerText = data.score;
-        })
-        .catch((error) => console.error("Error: ", error));
-    }
-
     function disableGame() {
         inputField.disabled = true;
         wordForm.querySelector("button").disabled = true;
@@ -86,6 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
     wordForm.addEventListener("submit", function(e) {
         e.preventDefault();
-        checkWord;
+        checkWord();
     })
 }); 

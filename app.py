@@ -20,6 +20,7 @@ def update_score():
 
     # Increase the score
     session['score'] += 1
+    session.modified = True
 
     # Return the updated score as a JSON response
     return jsonify({'score': session['score']})
