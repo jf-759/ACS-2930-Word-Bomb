@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     startNewRound();
-
+  
     wordForm.addEventListener("submit", function(e) {
         e.preventDefault();
         checkWord;
