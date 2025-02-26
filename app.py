@@ -34,11 +34,12 @@ def update_score():
     # Return the updated score as a JSON response
     return jsonify({'score': session['score']})
 
-@app.route('/final-score', methods= ['GET'])
-def get_final_score():
+# Get the user's current score
+@app.route('/get-score', methods= ['GET'])
+def get_score():
     if 'score' not in session:
         session['score'] = 0
-    return jsonify({'final_score': session['score']})
+    return jsonify({'score': session['score']})
 
 '''Clear the user's score (if they choose not to continue their previous game)'''
 @app.route('/reset-game', methods=['POST'])

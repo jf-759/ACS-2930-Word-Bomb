@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let scoreDisplay = document.getElementById("score");
     let resetModalDisplay = document.getElementById("reset-modal");
 
-
     let timeLeft = 10;
     let timer;
     let currentCluster = "";
@@ -76,15 +75,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function  playAgain(){
-        fetch('/final-score')
-        .then(response => response.json())
-        .then(data => {
-            if (data['final_score']) {
-                finalScoreModalDisplay.innerText = data.final_score;
-                resetModalDisplay.style.display = "flex";
-            }
-        })
+    function getScore(){
+        return fetch('/get-score')
+            .then(response => response.json())
+            .then(data => {
+                return data.score;
+            })
+            .catch((error) => {
+                console.error("Error fetching score:", error);
+            });
+    }
+    
+    async function playAgain(){
+        finalScore = await getScore()
+        finalScoreModalDisplay.innerText = finalScore;
+        resetModalDisplay.style.display = "flex";
     }
 
     function checkWord() {
@@ -125,14 +130,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // If the user wants to continue the game and maintain their previous score
-    function continueGame(){
+    async function continueGame(){
+        const score = await getScore();
+
+        scoreDisplay.innerText = score;
         messageDisplay.innerText = "";
         resetModalDisplay.style.display = "none";
         startNewRound();
     }
 
+    // Add event listeners to the modal buttons
     newGameButton.addEventListener("click", ()=> resetGame());
     continueGameButton.addEventListener("click", ()=> continueGame());
+
+    // Make sure that the user's score persists on reload
+    getScore().then(score => {
+        console.log('score', score)
+        scoreDisplay.innerText = score })
 
     startNewRound();
 
