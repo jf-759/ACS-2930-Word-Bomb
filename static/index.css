@@ -15,7 +15,7 @@
     --glow: rgb(98, 212, 246);
     --glow2: rgb(62, 139, 244);
     --glow3: rgb(33, 77, 131);
-    
+
     /* Fonts and Font Sizes */
     --heading-font: "Fredoka One";
     --main-font: "Fredoka One";
@@ -70,7 +70,7 @@
   }
   .container {
     display: flex;
-    align-items: center; 
+    align-items: center;
   }
 
   #message {
@@ -79,7 +79,7 @@
     color: #ff4d4d;
     text-align: center;
   }
-  
+
   input[type="text"] {
     width: 100%;
     max-width: 200px;
@@ -120,4 +120,27 @@
   button:hover {
     background-color: rgb(98, 212, 246);
     transform: scale(1.1);
+  }
+
+
+  .bomb-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+  }
+
+  .bomb-img {
+    height: 300px;
+  }
+
+  .game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .word-form {
+    padding: 0;
   }
