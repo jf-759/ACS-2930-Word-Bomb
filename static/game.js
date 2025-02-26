@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let timeLeft = 10;
     let timer;
-    let currentLetter = "";
+    let currentCluster = "";
     let score = 0;
     
     console.log("Initial Score: ", score);
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             wordForm.dispatchEvent(new Event("submit"));
         }
     });
-    
+
     function updateScore() {
         fetch("/update-score", {
             method: "POST",
@@ -31,16 +31,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error: ", error));
     }
 
-
-    function getRandomLetter() {
-        const alphabet = "abcdefghijklmnopqrstuvwxyz";
-        return alphabet[Math.floor(Math.random() * alphabet.length)];
-
+    function fetchCluster() {
+        return fetch("/get-cluster")
+            .then(response => response.json())
+            .then(data => {
+                return data.cluster; 
+            })
+            .catch(error => {
+                console.error("Error fetching cluster:", error);
+                return ""; 
+            });
     }
 
-    function startNewRound() {
-        currentLetter = getRandomLetter();
-        letterDisplay.textContent = `Letter: ${currentLetter}`;
+    async function startNewRound() {
+        currentCluster = await fetchCluster();
+        letterDisplay.textContent = `Cluster: ${currentCluster}`;
 
         timeLeft = 10;
         timerDisplay.textContent = `Time Left: ${timeLeft}s`;
@@ -68,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function checkWord() {
         const word = inputField.value.trim();
 
-        if (word && word.startsWith(currentLetter.toLowerCase())) {
+        if (word && word.includes(currentCluster.toLowerCase())) {
             messageDisplay.textContent = "✅ Valid word! Next round.";
             messageDisplay.style.color = "green";
             updateScore();
@@ -87,9 +92,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     startNewRound();
-  
+
     wordForm.addEventListener("submit", function(e) {
         e.preventDefault();
         checkWord();
-    })
-}); 
+    });
+});
