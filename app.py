@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, render_template, jsonify, session
 from dotenv import load_dotenv
+from data.word_bank import WordBank 
 
 # Load environment variables from .env file
 load_dotenv()
@@ -8,9 +9,17 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SESSION_KEY")  # Set the session key from the .env file
 
+# Create instance of Word bank to get clusters
+word_clusters = WordBank()
+
 @app.route('/')
 def displayHomepage():
     return render_template('game.html')
+
+@app.route('/get-cluster', methods=['GET'])
+def get_cluster():
+    cluster = word_clusters.get_cluster()
+    return jsonify({'cluster': cluster})
 
 @app.route('/update-score', methods=['POST'])
 def update_score():
