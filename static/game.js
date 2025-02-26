@@ -4,7 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageDisplay = document.getElementById("message");
     const inputField = document.getElementById("word-input");
     const wordForm = document.getElementById("word-form");
+    const newGameButton = document.getElementById("new-game");
+    const continueGameButton = document.getElementById("continue-game");
+    const finalScoreModalDisplay = document.getElementById("modal-final-score");
     let scoreDisplay = document.getElementById("score");
+    let resetModalDisplay = document.getElementById("reset-modal");
+
 
     let timeLeft = 10;
     let timer;
@@ -67,7 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
             clearInterval(timer);
             messageDisplay.textContent = "⏳ Time's up! Game Over.";
             disableGame();
+            playAgain();
         }
+    }
+
+    function  playAgain(){
+        fetch('/final-score')
+        .then(response => response.json())
+        .then(data => {
+            if (data['final_score']) {
+                finalScoreModalDisplay.innerText = data.final_score;
+                resetModalDisplay.style.display = "flex";
+            }
+        })
     }
 
     function checkWord() {
@@ -90,6 +107,32 @@ document.addEventListener("DOMContentLoaded", function () {
         inputField.disabled = true;
         wordForm.querySelector("button").disabled = true;
     }
+
+    // If the user wants to start a new game and clear their previous score
+    function resetGame(){
+        fetch("/reset-game", {
+            method: "POST"
+        }).then(response => response.json())
+        .then(data=> {
+            if (data.status === "success") {
+                scoreDisplay.innerText = "0";
+                messageDisplay.innerText = "";
+                resetModalDisplay.style.display = "none";
+                startNewRound();
+            }
+        })
+        .catch(error => console.log("Error resetting game:", error));
+    }
+    
+    // If the user wants to continue the game and maintain their previous score
+    function continueGame(){
+        messageDisplay.innerText = "";
+        resetModalDisplay.style.display = "none";
+        startNewRound();
+    }
+
+    newGameButton.addEventListener("click", ()=> resetGame());
+    continueGameButton.addEventListener("click", ()=> continueGame());
 
     startNewRound();
 
