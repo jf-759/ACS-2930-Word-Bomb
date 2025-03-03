@@ -1,13 +1,13 @@
 import os
 from flask import Flask, request, render_template, jsonify, session
 from dotenv import load_dotenv
-from data.word_bank import WordBank 
+from data.word_bank import WordBank
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SESSION_KEY")  # Set the session key from the .env file
+app.secret_key = "ACS0session0Key0"  # Set the session key from the .env file
 
 # Create instance of Word bank to get clusters
 word_clusters = WordBank()
