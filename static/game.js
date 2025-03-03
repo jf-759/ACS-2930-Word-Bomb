@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const finalScoreModalDisplay = document.getElementById("modal-final-score");
     let scoreDisplay = document.getElementById("score");
     let resetModalDisplay = document.getElementById("reset-modal");
+    let nextRoundTimeout;
 
     let timeLeft = 10;
     let timer;
@@ -92,21 +93,26 @@ document.addEventListener("DOMContentLoaded", function () {
         resetModalDisplay.style.display = "flex";
     }
 
-    function checkWord() {
-        const word = inputField.value.trim();
+function checkWord() {
+    const word = inputField.value.trim();
 
-        if (word && word.includes(currentCluster.toLowerCase())) {
-            messageDisplay.textContent = "✅ Valid word! Next round.";
-            messageDisplay.style.color = "green";
-            updateScore();
-            startNewRound();
-        } else {
-            messageDisplay.textContent = "❌ Invalid word! Try again.";
-            messageDisplay.style.color = "red";
-        }
+    if (word && word.includes(currentCluster.toLowerCase())) {
+        messageDisplay.textContent = "✅ Valid word! Next round.";
+        messageDisplay.style.color = "green";
+        updateScore();
 
-        inputField.value = "";
+        // Clear any previous timeout to avoid multiple scheduled rounds
+        clearTimeout(nextRoundTimeout);
+
+        // Delay before starting a new round so that the message displays long enough
+        nextRoundTimeout = setTimeout(startNewRound, 2000);
+    } else {
+        messageDisplay.textContent = "❌ Invalid word! Try again.";
+        messageDisplay.style.color = "red";
     }
+
+    inputField.value = "";
+}
 
     function disableGame() {
         inputField.disabled = true;
