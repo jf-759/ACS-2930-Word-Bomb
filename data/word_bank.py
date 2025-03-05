@@ -23,5 +23,3 @@ class WordBank:
         return self.current_cluster
       print('No letter clusters remaining')
       return False
-    
-    # TODO Implement word validation for user input: is this a real word, does it contain the letter cluster
