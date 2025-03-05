@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let timer;
     let currentCluster = "";
     let score = 0;
-    
+
     console.log("Initial Score: ", score);
 
     inputField.addEventListener("keypress", function (e) {
@@ -40,11 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return fetch("/get-cluster")
             .then(response => response.json())
             .then(data => {
-                return data.cluster; 
+                return data.cluster;
             })
             .catch(error => {
                 console.error("Error fetching cluster:", error);
-                return ""; 
+                return "";
             });
     }
 
@@ -86,33 +86,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Error fetching score:", error);
             });
     }
-    
+
+    function checkValidity(word) {
+        return fetch(`/check-word/${word}`)
+            .then(response => response.json())
+            .then(data => {
+                return data.valid;
+            })
+            .catch(error => {
+                console.error("Error checking word validity:", error);
+                return false;
+            });
+    }
+
     async function playAgain(){
         finalScore = await getScore()
         finalScoreModalDisplay.innerText = finalScore;
         resetModalDisplay.style.display = "flex";
     }
 
-function checkWord() {
-    const word = inputField.value.trim();
+    async function checkWord() {
+        const word = inputField.value.trim();
 
-    if (word && word.includes(currentCluster.toLowerCase())) {
-        messageDisplay.textContent = "✅ Valid word! Next round.";
-        messageDisplay.style.color = "green";
-        updateScore();
+        // Wait for the validity check to complete
+        const isValid = await checkValidity(word);
 
-        // Clear any previous timeout to avoid multiple scheduled rounds
-        clearTimeout(nextRoundTimeout);
+        if (word && word.includes(currentCluster.toLowerCase()) && isValid) {
+            messageDisplay.textContent = "✅ Valid word! Next round.";
+            messageDisplay.style.color = "green";
+            updateScore();
 
-        // Delay before starting a new round so that the message displays long enough
-        nextRoundTimeout = setTimeout(startNewRound, 2000);
-    } else {
-        messageDisplay.textContent = "❌ Invalid word! Try again.";
-        messageDisplay.style.color = "red";
+            // Clear any previous timeout to avoid multiple scheduled rounds
+            clearTimeout(nextRoundTimeout);
+
+            // Delay before starting a new round so that the message displays long enough
+            nextRoundTimeout = setTimeout(startNewRound, 2000);
+        } else {
+            messageDisplay.textContent = "❌ Invalid word! Try again.";
+            messageDisplay.style.color = "red";
+        }
+
+        inputField.value = "";
     }
-
-    inputField.value = "";
-}
 
     function disableGame() {
         inputField.disabled = true;
@@ -134,7 +149,7 @@ function checkWord() {
         })
         .catch(error => console.log("Error resetting game:", error));
     }
-    
+
     // If the user wants to continue the game and maintain their previous score
     async function continueGame(){
         const score = await getScore();

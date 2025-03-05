@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, jsonify, session
 from dotenv import load_dotenv
-from data.word_bank import WordBank 
+from data.word_bank import WordBank
 
 # Load environment variables from .env file
 load_dotenv()
@@ -20,6 +20,29 @@ def displayHomepage():
 def get_cluster():
     cluster = word_clusters.get_cluster()
     return jsonify({'cluster': cluster})
+
+
+@app.route('/check-word/<word>', methods=['GET'])
+def validate_word(word):
+    try:
+        with open('data/words_alpha.txt', 'r') as file:
+            valid_words = set(word.strip().lower() for word in file)
+        word = word.strip().lower()
+
+        # First check if the word exists in dictionary
+        if word not in valid_words:
+            return jsonify({'valid': False})
+
+        # Then check if it contains the current cluster
+        if not word_clusters.current_cluster or word_clusters.current_cluster not in word:
+            return jsonify({'valid': False})
+
+        return jsonify({'valid': True})
+
+
+    except FileNotFoundError:
+        print("Warning: words_alpha.txt not found")
+        return jsonify({'valid': False})
 
 @app.route('/update-score', methods=['POST'])
 def update_score():
